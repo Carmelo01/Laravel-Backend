@@ -76,22 +76,31 @@ class AdminController extends Controller
     }
 
     public function editProfile(Request $req, $id){
-        $admin = Admin::find($id);
-        if($admin){
-            $admin->fname = $req->fname;
-            $admin->mname = $req->mname;
-            $admin->lname = $req->lname;
-            $admin->email = $req->email;
-            $admin->profilePic = $req->image;
-            $admin->update();
+        $maxSize = 3072 * 3072; // 1MB as an example limit
+        $decodedImageData = base64_decode($req->image);
 
+        if (strlen($decodedImageData) > $maxSize) {
             return response()->json([
-                'msg'=>'Profile Updated Successfully',
-            ], 200);
-        } else {
-            return response()->json([
-                'msg'=>'Profile Not Found',
-            ]);
+                'msg'=>'The file size should be under 1mb.',
+            ], 422);
+        } else{
+            $admin = Admin::find($id);
+            if($admin){
+                $admin->fname = $req->fname;
+                $admin->mname = $req->mname;
+                $admin->lname = $req->lname;
+                $admin->email = $req->email;
+                $admin->profilePic = $req->image;
+                $admin->update();
+
+                return response()->json([
+                    'msg'=>'Profile Updated Successfully',
+                ], 200);
+            } else {
+                return response()->json([
+                    'msg'=>'Profile Not Found',
+                ]);
+            }
         }
     }
 

@@ -12,7 +12,9 @@ class CapsuleRevisionController extends Controller
     public function getall()
     {
         // $capsule = Capsule::all();
-        $revisedCapsule = Capsule::with( 'user', 'revision')->get();
+        $revisedCapsule = Capsule::with(['user' => function($query) {
+            $query->select('id', 'fname', 'mname', 'lname', 'email');
+        }, 'revision'])->get();
 
         return response()->json([
             'data'=>$revisedCapsule,
@@ -20,7 +22,7 @@ class CapsuleRevisionController extends Controller
         ]);
 
     }
-    
+
     public function store(Request $req, $id) {
         $validatedData = Validator::make($req->all(), [
             'title' => 'required',
@@ -65,7 +67,6 @@ class CapsuleRevisionController extends Controller
     //         'data'=>$revisedCapsule,
     //         "msg"=>"Retrieved Revised Capsule/s"
     //     ]);
-
     // }
 
 
