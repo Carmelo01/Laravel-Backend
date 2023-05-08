@@ -22,25 +22,43 @@ class ContentManagementController extends Controller
     }
     public function updateCict(Request $req, $id)
     {
-        $content = ManageContent::find($id);
-        $content->cictLogo = $req->image;
-        $content->update();
+        $maxSize = 3072 * 3072; // 1MB as an example limit
+        $decodedImageData = base64_decode($req->image);
 
-        return response()->json([
-            'msg'=>'Image Updated Successfully',
-        ], 200);
+        if (strlen($decodedImageData) > $maxSize) {
+            return response()->json([
+                'msg'=>'The file size should be under 1mb.',
+            ], 422);
+        } else{
+            $content = ManageContent::find($id);
+            $content->cictLogo = $req->image;
+            $content->update();
+
+            return response()->json([
+                'msg'=>'Image Updated Successfully',
+            ], 200);
+        }
     }
 
     public function updateSideNav(Request $req, $id)
     {
-        $content = ManageContent::find($id);
-        $content->sideNav = $req->image;
-        $content->update();
+        $maxSize = 3072 * 3072; // 1MB as an example limit
+        $decodedImageData = base64_decode($req->image);
 
-        return response()->json([
-            'data'=> $content,
-            'msg'=>'Image Updated Successfully',
-        ], 200);
+        if (strlen($decodedImageData) > $maxSize) {
+            return response()->json([
+                'msg'=>'The file size should be under 1mb.',
+            ], 422);
+        } else{
+            $content = ManageContent::find($id);
+            $content->sideNav = $req->image;
+            $content->update();
+
+            return response()->json([
+                'data'=> $content,
+                'msg'=>'Image Updated Successfully',
+            ], 200);
+        }
     }
 
     function default_pictures(){
