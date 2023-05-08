@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 class Admin extends Authenticatable implements JWTSubject
 {
     use Notifiable;
-
+    protected $table = 'admins';
     protected $fillable = [
         'email',
         'password',

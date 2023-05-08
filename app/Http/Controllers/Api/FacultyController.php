@@ -87,27 +87,36 @@ class FacultyController extends Controller
 
     //edit profile
     public function editProfile(Request $req) {
-        $user = User::find(auth()->user()->id);
-        if($user){
-             //add validation if needed
-            $user->fname = $req->fname;
-            $user->mname = $req->mname;
-            $user->lname = $req->lname;
-            $user->email = $req->email;
-            $user->contact = $req->contact;
-            $user->profilePic = $req->image;
-            $user->update();
+        $maxSize = 3072 * 3072; // 1MB as an example limit
+        $decodedImageData = base64_decode($req->image);
 
+        if (strlen($decodedImageData) > $maxSize) {
             return response()->json([
-                'success'=>true,
-                'msg'=>'User Updated Successfully',
-                'data' => $req->all()
-            ]);
-        } else {
-            return response()->json([
-                'success'=>true,
-                'msg'=>'User Not Found. Please Login Again!',
-            ]);
+                'msg'=>'The file size should be under 1mb.',
+            ], 422);
+        } else{
+            $user = User::find(auth()->user()->id);
+            if($user){
+                //add validation if needed
+                $user->fname = $req->fname;
+                $user->mname = $req->mname;
+                $user->lname = $req->lname;
+                $user->email = $req->email;
+                $user->contact = $req->contact;
+                $user->profilePic = $req->image;
+                $user->update();
+
+                return response()->json([
+                    'success'=>true,
+                    'msg'=>'User Updated Successfully',
+                    'data' => $req->all()
+                ]);
+            } else {
+                return response()->json([
+                    'success'=>true,
+                    'msg'=>'User Not Found. Please Login Again!',
+                ]);
+            }
         }
     }
 }

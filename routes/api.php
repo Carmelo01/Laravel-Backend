@@ -12,6 +12,8 @@ use App\Http\Controllers\RubricController;
 use App\Http\Controllers\GradeRubricController;
 use App\Http\Controllers\ContentManagementController;
 use App\Http\Controllers\CapsuleRevisionController;
+use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\ChangePasswordController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -43,6 +45,8 @@ Route::group([
     // Route::view('admin/Log', [AdminController::class, 'adminlog']);
     // Route::post('adminRefresh', [AdminControllerr::class, 'refresh']);
     Route::group(['middleware' => 'admin:admin'], function(){
+        //change password
+        Route::post('admin/change/password', [ChangePasswordController::class, 'admin_change_password']);
         Route::get('admin/Me', [AdminController::class, 'adminme']);
         Route::post('admin/Logout', [AdminController::class, 'adminlogout']);
 });
@@ -67,6 +71,9 @@ Route::group(['middleware' => 'auth:user'], function(){
     //grade capsule
     Route::post('capsule/review/grade/{id}', [GradeRubricController::class, 'gradeCapsule']);
     Route::get('check/currentUser/is_valid/{id}', [GradeRubricController::class, 'checkUserifReviewer']);
+
+    //change password
+    Route::post('faculty/change/password', [ChangePasswordController::class, 'faculty_change_password']);
 });
    //grade capsule
 Route::post('graded/rubric/get', [GradeRubricController::class, 'getGradedRubrics']);
