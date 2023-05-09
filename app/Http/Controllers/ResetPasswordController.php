@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Admin;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminResetPassword;
 use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -13,6 +15,21 @@ use Carbon\Carbon;
 
 class ResetPasswordController extends Controller
 {
+    public function adminSendEmail(Request $request){
+        // return $request->all();
+        if(!$this->validateAdminEmail($request->email)){
+         return $this->failedResponse();
+        }
+
+        $this->adminSend($request->email);
+        return $this->successResponse();
+     }
+
+     public function adminSend($email){
+        $token = $this->createToken($email);
+        Mail::to($email)->send(new AdminResetPassword($token));
+    }
+
     public function sendEmail(Request $request){
        // return $request->all();
        if(!$this->validateEmail($request->email)){
@@ -51,7 +68,9 @@ class ResetPasswordController extends Controller
         ]);
     }
 
-
+    public function validateAdminEmail($email){
+        return !!Admin::where('email', $email)->first();
+    }
 
     public function validateEmail($email){
         return !!User::where('email', $email)->first();

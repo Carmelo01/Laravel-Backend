@@ -13,6 +13,11 @@ use Hash;
 
 class ChangePasswordController extends Controller
 {
+    public function adminProcess(ChangePasswordRequest $request){
+
+        return $this->getPasswordResetTableRow($request)->count()> 0 ? $this->adminChangePassword($request) : $this->tokenNotFoundResponse();//->get();
+    }
+
     public function process(ChangePasswordRequest $request){
 
         return $this->getPasswordResetTableRow($request)->count()> 0 ? $this->changePassword($request) : $this->tokenNotFoundResponse();//->get();
@@ -29,6 +34,18 @@ class ChangePasswordController extends Controller
         return response()->json(['error' =>'Token or Email is Incorrect'],Response::HTTP_UNPROCESSABLE_ENTITY);
 
     }
+
+    private function adminChangePassword($request){
+        //find email
+        $admin = Admin::whereEmail($request->email)->first();
+        //update pass
+        $admin->update(['password' => Hash::make($request->password)]);
+        //remove verification data from db
+        $this->getPasswordResetTableRow($request)->delete();
+        //reset password response
+        return response()->json(['data'=>'Password Successfully Changed'],Response::HTTP_CREATED);
+    }
+
 
     private function changePassword($request){
 
