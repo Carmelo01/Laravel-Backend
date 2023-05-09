@@ -130,6 +130,7 @@ Route::delete('rubrics/delete/{id}', [RubricController::class, 'permadelete']);
 
 //admin verify user
 Route::post('admin/verify/faculty/{id}', [AdminController::class, 'verifyFaculty']);
+Route::post('admin/decline/faculty/{id}', [AdminController::class, 'declineFaculty']);
 
 //content management
 Route::get('admin/content/index', [ContentManagementController::class, 'index']);
