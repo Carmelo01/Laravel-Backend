@@ -44,6 +44,8 @@ Route::group([
     Route::post('admin/Login', [AdminController::class, 'adminlogin']);
     // Route::view('admin/Log', [AdminController::class, 'adminlog']);
     // Route::post('adminRefresh', [AdminControllerr::class, 'refresh']);
+    Route::post('admin/SendPasswordResetLink', [ResetPasswordController::class, 'adminSendEmail']); //@sendEmail daw na ipapasok
+    Route::post('admin/ResetPassword', [ChangePasswordController::class, 'adminProcess']); //@process daw na ipapasok
     Route::group(['middleware' => 'admin:admin'], function(){
         //change password
         Route::post('admin/change/password', [ChangePasswordController::class, 'admin_change_password']);

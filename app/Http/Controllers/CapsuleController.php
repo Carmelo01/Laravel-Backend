@@ -194,7 +194,9 @@ class CapsuleController extends Controller
     // auth()->user()->fname
 
     public function getmycapsule(){
-        $myCapsule = Capsule::where('author_id','=',auth()->user()->id)->get();
+        $myCapsule = Capsule::with(['user' => function($query) {
+            $query->select('id', 'fname', 'mname', 'lname', 'email');
+        }])->where('author_id','=',auth()->user()->id)->get();
         $myCapsule->makeHidden(['file_path']);
         return response()->json([
             "data"=>$myCapsule
