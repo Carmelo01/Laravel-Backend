@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyUser;
+use App\Mail\DeclineUser;
 
 class AdminController extends Controller
 {
@@ -68,10 +71,28 @@ class AdminController extends Controller
         $faculty = User::find($id);
         $faculty->status = 1;
         $faculty->update();
+        Mail::to($faculty->email)->send(new VerifyUser($faculty));
 
         return response()->json([
             'success'=>true,
             'msg'=>'Verification Successful',
+        ]);
+    }
+
+    public function declineFaculty(Request $req, $id)
+    {
+        $comment = $req->comment;
+        if($comment == null){
+            $comment = 'Please try again and make sure that you are a faculty of CICT.';
+        }
+        $faculty = User::find($id);
+        $faculty->status = 2;
+        $faculty->update();
+        Mail::to($faculty->email)->send(new DeclineUser($faculty, $comment));
+
+        return response()->json([
+            'success'=>true,
+            'msg'=>'Faculty Declined!',
         ]);
     }
 

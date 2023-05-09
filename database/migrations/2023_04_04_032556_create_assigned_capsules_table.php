@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();
             $table->foreign('faculty_id')->references('id')->on('users');
-            $table->foreign('capsule_id')->references('id')->on('capsules');
+            $table->foreign('capsule_id')->references('id')->on('capsules')->onDelete('cascade');
             $table->softDeletes();
         });
     }

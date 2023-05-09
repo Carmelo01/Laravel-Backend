@@ -164,7 +164,8 @@ class CapsuleController extends Controller
     public function softdelete(Request $req, $id){
         // use SoftDeletes;
         $capsule = Capsule::find($id);
-        $capsule->delete();
+        // $capsule->delete();
+        $capsule->forceDelete();
         return response()->json([
             "msg"=>"Soft Delete Successful"
         ]);
@@ -318,9 +319,12 @@ class CapsuleController extends Controller
         ]);
     }
 
-    public function rejectCapsule($id){
+    public function rejectCapsule(Request $req, $id){
         $capsule = Capsule::find($id);
         $capsule->status = 4;
+        if($req->comment != null){
+            $capsule->comment = $req->comment;
+        }
         $capsule->update();
 
         return response()->json([
@@ -343,6 +347,9 @@ class CapsuleController extends Controller
     public function revisionCapsule($id){
         $capsule = Capsule::find($id);
         $capsule->status = 3;
+        if($req->comment != null){
+            $capsule->comment = $req->comment;
+        }
         $capsule->update();
 
         return response()->json([
