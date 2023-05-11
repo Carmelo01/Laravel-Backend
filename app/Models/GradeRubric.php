@@ -18,9 +18,6 @@ class GradeRubric extends Model
         'capsule_id',
     ];
 
-    public function rubric(){
-        return $this->belongsTo(Rubric::class, 'rubrics_id', 'id');
-    }
     public function faculty(){
         return $this->belongsTo(User::class, 'faculty_id', 'id');
     }

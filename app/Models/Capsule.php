@@ -25,6 +25,7 @@ class Capsule extends Model
         'description',
         'status',
         'datePosted',
+        'capsule_type'
     ];
 
     public function user(){

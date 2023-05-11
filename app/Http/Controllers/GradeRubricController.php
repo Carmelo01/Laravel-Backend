@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\GradeRubric;
 use App\Models\AssignedCapsule;
 use App\Models\CommentCapsule;
+use App\Models\Rubric;
 use App\Models\User;
 
 class GradeRubricController extends Controller
 {
     public function getGradedRubrics(Request $req){
-        $verifyReviewer = GradeRubric::with('rubric', 'rubric.category')->where('faculty_id', $req->reviewer_id)->where('capsule_id', $req->capsule_id)->get();
+        $verifyReviewer = GradeRubric::where('faculty_id', $req->reviewer_id)->where('capsule_id', $req->capsule_id)->get();
         $reviewer = User::where('id', $req->reviewer_id)->first();
         return response()->json([
             "msg" => "Success!",
@@ -37,8 +38,10 @@ class GradeRubricController extends Controller
         $overall = 0;
         if($verifyReviewer){
             foreach($req->data as $rubric){
+                $rubricData = Rubric::with('category')->find($rubric['rubricId']);
                 $gradeCapsule = new GradeRubric;
-                $gradeCapsule->rubrics_id = $rubric['rubricId'];
+                $gradeCapsule->rubric = $rubricData->rubric;
+                $gradeCapsule->category = $rubricData->category->title;
                 $gradeCapsule->capsule_id = $id;
                 $gradeCapsule->faculty_id = auth()->user()->id;
                 $gradeCapsule->grade = $rubric['grade'];
