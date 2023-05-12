@@ -14,6 +14,7 @@ use App\Http\Controllers\ContentManagementController;
 use App\Http\Controllers\CapsuleRevisionController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\RubricTypeController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -109,8 +110,12 @@ Route::delete('faculty/softdelete/{id}', [FacultyController::class, 'softdelete'
 Route::get('faculty/restore-data/{id}', [FacultyController::class, 'restore']);
 Route::delete('faculty/delete/{id}', [FacultyController::class, 'permadelete']);
 
+//rubrics type
+Route::get('rubrics/funded', [RubricTypeController::class, 'fundedRubrics']);
+Route::get('rubrics/not/funded', [RubricTypeController::class, 'notFundedRubrics']);
 
 //rubrics category
+Route::get('category/generate/default', [RubricTypeController::class, 'store']);
 Route::get('category/index', [CategoryController::class, 'index']);
 Route::get('category/getOne/{id}', [CategoryController::class, 'getOne']);
 Route::post('category/add', [CategoryController::class, 'store']);

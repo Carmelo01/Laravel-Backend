@@ -13,9 +13,15 @@ class Category extends Model
     protected $table = 'categories';
     protected $fillable = [
         'title',
+        'type_id'
     ];
 
     public function rubric(){
         return $this->hasMany(Rubric::class);
     }
+
+    public function type(){
+        return $this->belongsTo(RubricType::class, 'type_id', 'id');
+    }
+
 }
