@@ -20,7 +20,4 @@ class Rubric extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function graderubric(){
-        return $this->hasMany(GradeRubric::class);
-    }
 }

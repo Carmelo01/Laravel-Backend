@@ -5,15 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\RubricType;
+use function App\Helpers\default_rubric_types;
+
 
 class CategoryController extends Controller
 {
     public function index(){
-        $categories = Category::with(['rubric'])->get();
-
+        $categories = Category::with(['rubric'])
+            ->where('type_id', '3')
+            ->get();
+        $type = RubricType::all()->count();
+        if($type <= 0){
+            default_rubric_types();
+        }
         return response()->json([
             'data'=>$categories,
-            "msg"=>"Retrieved Categories"
+            "msg"=>"Retrieved Categories",
         ]);
     }
 
@@ -30,6 +38,7 @@ class CategoryController extends Controller
         // create a new instance of the resource model
         $category  = new Category;
         $category->title = $req->input('title');
+        $category->type_id = '3';
         // set other fields as needed
         $category->save();
 

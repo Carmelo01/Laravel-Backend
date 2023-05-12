@@ -33,7 +33,7 @@ class CapsuleController extends Controller
         // $capsule = $capsule->comment()->get();
         $capsule = Capsule::with(['user'=> function($query) {
             $query->select('id', 'fname', 'mname', 'lname', 'email');
-            }, 'comment.user', 'comment.admin','assigncapsule.user', 'graderubric.rubric', 'revision'])
+            }, 'comment.user', 'comment.admin','assigncapsule.user', 'graderubric', 'revision'])
             ->where('id', $id)->get();
         $this->setGraded($capsule, $id);
         return response()->json([
@@ -94,6 +94,7 @@ class CapsuleController extends Controller
             $capsule->description = $req->input('description');
             $capsule->author_id = auth()->user()->id;
             $capsule->status = 0;
+            $capsule->capsule_type = $req->input('capsule_type');
             // $capsule->date_posted = new DateTime('now');
             if($req->hasFile('file_path')) {
                 {
