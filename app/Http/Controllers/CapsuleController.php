@@ -324,7 +324,7 @@ class CapsuleController extends Controller
         $capsule = Capsule::find($id);
         $capsule->status = 4;
         if($req->comment != null){
-            $capsule->comment = $req->comment;
+            $capsule->admin_comment = $req->comment;
         }
         $capsule->update();
 
