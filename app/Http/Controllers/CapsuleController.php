@@ -51,7 +51,7 @@ class CapsuleController extends Controller
                 $query->select('id');},
             'comment.admin','assigncapsule.user'=> function($query) {
                 $query->select('id');},
-            'graderubric.rubric', 'revision'])
+            'graderubric', 'revision'])
             ->where('id', $id)->get();
         $this->setGraded($capsule, $id);
         return response()->json([

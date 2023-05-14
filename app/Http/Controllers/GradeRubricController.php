@@ -15,10 +15,12 @@ class GradeRubricController extends Controller
     public function getGradedRubrics(Request $req){
         $verifyReviewer = GradeRubric::where('faculty_id', $req->reviewer_id)->where('capsule_id', $req->capsule_id)->get();
         $reviewer = User::where('id', $req->reviewer_id)->first();
+        $grade = AssignedCapsule::where('faculty_id', $req->reviewer_id)->where('capsule_id', $req->capsule_id)->first();
         return response()->json([
             "msg" => "Success!",
             "data" => $verifyReviewer,
-            "user"=>$reviewer
+            "user"=>$reviewer,
+            "grade"=>$grade
         ]);
     }
 
