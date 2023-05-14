@@ -13,7 +13,8 @@ class GradeRubric extends Model
     protected $table = 'grade_rubrics';
     protected $fillable = [
         'grade',
-        'rubrics_id',
+        'rubric',
+        'category',
         'faculty_id',
         'capsule_id',
     ];
