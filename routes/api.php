@@ -147,6 +147,7 @@ Route::post('admin/edit/profile/{id}', [AdminController::class, 'editProfile']);
 
 //Edit capsule status
 Route::post('capsule/reject/{id}', [CapsuleController::class, 'rejectCapsule']);
+Route::post('capsule/submitTo/{id}', [CapsuleController::class, 'submitCapsule']);
 Route::post('capsule/approve/{id}', [CapsuleController::class, 'approveCapsule']);
 Route::post('capsule/revise/{id}', [CapsuleController::class, 'revisionCapsule']);
 Route::post('capsule/remove/reviewer/{id}', [CapsuleController::class, 'removeReviewer']);
