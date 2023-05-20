@@ -345,6 +345,17 @@ class CapsuleController extends Controller
         ]);
     }
 
+    public function submitCapsule($id){
+        $capsule = Capsule::find($id);
+        $capsule->status = 6;
+        $capsule->update();
+
+        return response()->json([
+            'success'=>true,
+            'msg'=>'Approved Capsule',
+        ]);
+    }
+
     public function revisionCapsule($id){
         $capsule = Capsule::find($id);
         $capsule->status = 3;
